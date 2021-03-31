@@ -13,10 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.journeyapps.barcodescanner.CaptureManager;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
@@ -27,9 +24,9 @@ import java.util.List;
  * Created by samsung on 2017-08-28.
  */
 
-public class CustomScannerActivity extends AppCompatActivity {
+public class CustomScannerActivity extends Activity {
     private final String packageName_safepass = "com.jinsit.safepass";
-    boolean detectSound;
+    boolean detectSound = true;
 
     private CaptureManager capture;
     private DecoratedBarcodeView barcodeScannerView;
@@ -63,17 +60,17 @@ public class CustomScannerActivity extends AppCompatActivity {
         safepass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if (isAppInstalled(packageName_safepass)) {
+                if (isAppInstalled(packageName_safepass)) {
                     Intent intent_safepass = getPackageManager().getLaunchIntentForPackage(packageName_safepass);
                     startActivity(intent_safepass);
                     finish();
                     detectSound = true;
-//                } else {
-//                    Intent intent = new Intent(Intent.ACTION_VIEW);
-//                    intent.addCategory(Intent.CATEGORY_DEFAULT);
-//                    intent.setData(Uri.parse("market://details?id=" + packageName_safepass));
-//                    startActivity(intent);
-//                }
+                } else {
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.addCategory(Intent.CATEGORY_DEFAULT);
+                    intent.setData(Uri.parse("market://details?id=" + packageName_safepass));
+                    startActivity(intent);
+                }
             }
         });
 
@@ -137,17 +134,17 @@ public class CustomScannerActivity extends AppCompatActivity {
                 .hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
     }
 
-//    //어플리케이션이 설치되었는지 확인
-//    boolean isAppInstalled(String packageName) {
-//        PackageManager pm = getApplication().getPackageManager();
-//        PackageInfo pi;
-//
-//        try {
-//            pi = pm.getPackageInfo(packageName, 0);
-//        } catch (PackageManager.NameNotFoundException e) {
-//            e.printStackTrace();
-//            return false;
-//        }
-//        return true;
-//    }
+    //어플리케이션이 설치되었는지 확인
+    boolean isAppInstalled(String packageName) {
+        PackageManager pm = getApplication().getPackageManager();
+        PackageInfo pi;
+
+        try {
+            pi = pm.getPackageInfo(packageName, 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
 }
